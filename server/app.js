@@ -8,6 +8,11 @@ require('./db/conn');
 
 // const User = require('./model/userSchema');
 
+app.use(express.json());
+
+//we link the router file
+app.use(require('./router/auth'));
+
 
 const PORT=process.env.PORT;
 
@@ -18,9 +23,9 @@ const middleware = (req,res,next) =>{
     next();
 }
 
-app.get('/',(req,res)=>{
-    res.send("Hello World from the server");
-});
+// app.get('/',(req,res)=>{
+//     res.send("Hello World from the server");
+// });
 
 app.get('/about',middleware,(req,res) =>{
     res.send("Hello I am from About Page");
