@@ -1,17 +1,13 @@
+const dotenv= require('dotenv');
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 
-const DB ='mongodb+srv://admin:admin@cluster0.bhcpk.mongodb.net/tutordb?retryWrites=true&w=majority'
+dotenv.config({path:'./config.env'});
+require('./db/conn');
 
-mongoose.connect(DB, {
-    useNewUrlParser:true,
-    useCreateIndex:true,
-    useUnifiedTopology:true,
-    useFindAndModify:false
-}).then(()=>{
-    console.log("Success Connected");
-}).catch((err)=> console.log("No Connection"));
+
+const PORT=process.env.PORT;
 
 //middleware
 
@@ -40,6 +36,6 @@ app.get('/signup',(req,res)=>{
     res.send("Hello I am from Signup Page");
 });
 
-app.listen(3000,()=>{
-    console.log("Server is running in 3000");
+app.listen(PORT,()=>{
+    console.log(`Server is running in ${PORT}`);
 });
