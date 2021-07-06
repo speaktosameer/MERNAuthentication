@@ -1,6 +1,17 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 
+const DB ='mongodb+srv://admin:admin@cluster0.bhcpk.mongodb.net/tutordb?retryWrites=true&w=majority'
+
+mongoose.connect(DB, {
+    useNewUrlParser:true,
+    useCreateIndex:true,
+    useUnifiedTopology:true,
+    useFindAndModify:false
+}).then(()=>{
+    console.log("Success Connected");
+}).catch((err)=> console.log("No Connection"));
 
 //middleware
 
