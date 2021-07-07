@@ -31,7 +31,7 @@ router.get('/',(req,res)=>{
 // });
 
 
-//Async -await
+//Async -await      
 
 router.post('/register', async (req,res)=>{
 
@@ -57,6 +57,30 @@ router.post('/register', async (req,res)=>{
     }
     
 });
+
+//Login Route
+
+router.post('/signin',async (req,res) =>{
+    try{
+        const {email,password}=req.body;
+        if(!email || !password){
+            return res.status(400).json({error:"Please Filled data"});
+        }
+
+        const userLogin = await User.findOne({email:email});
+
+        console.log(userLogin);
+        if(!userLogin){
+            res.status(400).json({error:"user error"});
+        }else{
+            res.json({message:"user signin Successfully"});
+        }
+        
+
+    }catch(err){
+        console.log(err);
+    }
+})
 
 
 module.exports = router;
