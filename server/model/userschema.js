@@ -3,7 +3,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const userSchema = new mongooose.Schema({
-    name:{
+    fname:{
+        type:String,
+        required:true
+    },
+    lname:{
         type:String,
         required:true
     },
@@ -15,15 +19,15 @@ const userSchema = new mongooose.Schema({
         type:Number,
         required:true,
     },
-    work:{
-        type:String,
-        required:true,
-    },
     password:{
         type:String,
         required:true,
     },
     cpassword:{
+        type:String,
+        required:true,
+    },
+    prof:{
         type:String,
         required:true,
     },
@@ -39,7 +43,6 @@ const userSchema = new mongooose.Schema({
 
 //password Hashing
 userSchema.pre('save',async function(next){
-    console.log("Hello hum hai");
     if(this.isModified('password')){
         this.password = await bcrypt.hash(this.password,12);
         this.cpassword = await bcrypt.hash(this.cpassword,12);

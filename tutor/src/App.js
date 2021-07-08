@@ -1,6 +1,6 @@
 import React from 'react'
 import "./App.css";
-import {Route} from 'react-router-dom';
+import {Route,Switch} from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import About from './components/About';
@@ -16,6 +16,7 @@ export const App = () => {
   return (
     <>
       <Navbar/>
+      <Switch>
       <Route exact path='/'>
         <Home/>
       </Route>
@@ -39,6 +40,7 @@ export const App = () => {
       <Route>
         <ErrorPage/>
       </Route>
+      </Switch>
     </>
   )
 }

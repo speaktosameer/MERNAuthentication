@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { useHistory } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -49,15 +50,55 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Signup() {
+  
   const classes = useStyles();
-  const [profession, setProfession] = React.useState('');
+  const history =useHistory();
+  const [user,setUser]=useState({
+    fname:"",lname:"",email:"",phone:"",password:"",cpassword:"",prof:""
 
+  });
+  
+
+  let name,value;
+  const handleInputs=(e)=>{
+    console.log(e);
+    name=e.target.name;
+    value=e.target.value;
+
+    setUser({...user,[name]:value});
+  }
   const handleChange = (event) => {
-    setProfession(event.target.value);
-
-     
+     setUser({...user, prof:event.target.value})
   };
 
+    const PostData = async (e) => {
+        e.preventDefault();
+
+        const{fname,lname,email,phone,password,cpassword,prof} =user;
+
+       const res = await fetch('/register', {
+         method:"POST",
+         headers:{
+           "Content-Type":"application/json"
+         },
+         body:JSON.stringify({
+          fname,lname,email,phone,password,cpassword,prof
+         })
+       });
+
+       const data = await res.json();
+
+       if(data.status === 422 || !data){
+         window.alert("Invalid Registration");
+         console.log("Invalid Registration");
+       }
+       else{
+        window.alert("Successful Registration");
+        console.log("Successful Registration");
+
+        history.push('/login');
+       }
+    }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -69,18 +110,20 @@ export default function Signup() {
         {/* <Typography component="h1" variant="h5">
           Signup as Student
         </Typography> */}
-        <form className={classes.form} noValidate>
+        <form method="POST" className={classes.form} noValidate>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
-                name="firstName"
+                name="fname"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
+                id="fname"
                 label="First Name"
                 autoFocus
+                value={user.fname}
+                onChange={handleInputs}
                 inputProps={{
                 maxLength: 15}}
               />
@@ -90,9 +133,11 @@ export default function Signup() {
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
+                id="lname"
                 label="Last Name"
-                name="lastName"
+                name="lname"
+                value={user.lname}
+                onChange={handleInputs}
                 autoComplete="lname"
                 inputProps={{
                 maxLength: 15}}
@@ -104,6 +149,8 @@ export default function Signup() {
                 required
                 fullWidth
                 id="email"
+                value={user.email}
+                onChange={handleInputs}
                 label="Email Address"
                 name="email"
                 autoComplete="email"
@@ -117,9 +164,11 @@ export default function Signup() {
                 type="number"
                 required
                 fullWidth
-                id="number"
+                id="phone"
+                value={user.phone}
+                onChange={handleInputs}
                 label="Phone Number"
-                name="number"
+                name="phone"
                 autoComplete="number"
                 onInput = {(e) =>{
                 e.target.value = Math.max(0, parseInt(e.target.value) ).toString().slice(0,12)}}
@@ -131,9 +180,27 @@ export default function Signup() {
                 required
                 fullWidth
                 name="password"
+                value={user.password}
+                onChange={handleInputs}
                 label="Password"
                 type="password"
                 id="password"
+                autoComplete="current-password"
+                inputProps={{
+                maxLength: 25}}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="cpassword"
+                value={user.cpassword}
+                onChange={handleInputs}
+                label="Confirm Password"
+                type="password"
+                id="cpassword"
                 autoComplete="current-password"
                 inputProps={{
                 maxLength: 25}}
@@ -145,7 +212,7 @@ export default function Signup() {
         <Select
           labelId="demo-simple-select-filled-label"
           id="demo-simple-select-filled"
-          value={profession}
+          value={user.prof}
           onChange={handleChange}
           label="Profession"
         >
@@ -169,6 +236,7 @@ export default function Signup() {
             fullWidth
             variant="contained"
             color="primary"
+            onClick={PostData}
             className={classes.submit}
           >
             Sign Up

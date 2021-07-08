@@ -37,9 +37,9 @@ router.get('/',(req,res)=>{
 
 router.post('/register', async (req,res)=>{
 
-    const {name,email,phone,work,password,cpassword }=req.body;
+    const {fname,lname,email,phone,password,cpassword,prof }=req.body;
 
-    if(!name || !email || !phone || !work || !password || !cpassword){
+    if(!fname || !lname || !email || !phone|| !password || !cpassword || !prof){
         return res.status(422).json({error : "Please filled it properly"});
     }
 
@@ -51,7 +51,7 @@ router.post('/register', async (req,res)=>{
         } else if(password != cpassword){
             return res.status(422).json({error : "Passsword not matching"});
         }else{
-            const user = new User({name,email,phone,work,password,cpassword });
+            const user = new User({fname,lname,email,phone,password,cpassword,prof });
             //password encrypting
 
         await user.save();
