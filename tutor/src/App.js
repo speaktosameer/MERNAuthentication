@@ -1,6 +1,5 @@
 import React from 'react'
 import "./App.css";
-import useSticky from './hooks/useSticky';
 import {Route} from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
@@ -8,21 +7,21 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Login from './components/Login';
 import SignUp from './components/Signup';
+import ErrorPage from './components/ErrorPage';
 
 
 
 export const App = () => {
-  const { isSticky, element } = useSticky()
+  
   return (
     <>
-      <Navbar sticky={isSticky}/>
-
+      <Navbar/>
       <Route exact path='/'>
         <Home/>
       </Route>
 
       <Route path='/about'>
-        <About element={element}/>
+        <About />
       </Route>
 
       <Route path='/contact'>
@@ -35,6 +34,10 @@ export const App = () => {
 
       <Route path='/signup'>
         <SignUp/>
+      </Route>
+     
+      <Route>
+        <ErrorPage/>
       </Route>
     </>
   )
