@@ -7,7 +7,7 @@ import Logo from '../images/logo1.png'
 const Navbar = () => {
     return (
       <>
-<nav className="navbar navbar-expand-lg navbar-light bg-light ps-4">
+<nav className="navbar navbar-expand-lg navbar-light bg-light ps-4 stick">
   <NavLink className="navbar-brand" to="/">
     <img src={Logo} alt="Logo"/>
   </NavLink>

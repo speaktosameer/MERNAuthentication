@@ -1,5 +1,6 @@
 import React from 'react'
 import "./App.css";
+import useSticky from './hooks/useSticky';
 import {Route} from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
@@ -11,16 +12,17 @@ import SignUp from './components/Signup';
 
 
 export const App = () => {
+  const { isSticky, element } = useSticky()
   return (
     <>
-      <Navbar/>
+      <Navbar sticky={isSticky}/>
 
       <Route exact path='/'>
         <Home/>
       </Route>
 
       <Route path='/about'>
-        <About/>
+        <About element={element}/>
       </Route>
 
       <Route path='/contact'>
