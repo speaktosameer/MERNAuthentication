@@ -1,9 +1,8 @@
-const jwt = require('jsonwebtoken');
-const mongoose = require('mongoose');
+const mongooose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
-
-const userSchema = new mongoose.Schema({
+const userSchema = new mongooose.Schema({
     fname:{
         type:String,
         required:true
@@ -65,6 +64,6 @@ userSchema.methods.generateAuthToken = async function(){
 }
 
 
-const User = mongoose.model('User',userSchema);
+const User = mongooose.model('USER',userSchema);
 
 module.exports = User;

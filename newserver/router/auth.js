@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const jwt = require("jsonwebtoken");
 const authenticate = require('../middleware/authenticate');
 
 
 require('../db/conn');
-const User =require('../model/userSchema');
+const User =require('../model/userschema');
 
 router.get('/',(req,res)=>{
     res.send("Hello World from the server Router");
@@ -42,7 +41,7 @@ router.post('/register', async (req,res)=>{
     const {fname,lname,email,phone,password,cpassword,prof }=req.body;
 
     if(!fname || !lname || !email || !phone|| !password || !cpassword || !prof){
-        return res.status(400).json({error : "Please filled it properly"});
+        return res.status(422).json({error : "Please filled it properly"});
     }
 
     try{
@@ -50,8 +49,8 @@ router.post('/register', async (req,res)=>{
 
         if(userExist){
             return res.status(422).json({error : "Email already exist"});
-        } else if(password !== cpassword){
-            return res.status(401).json({error : "Passsword not matching"});
+        } else if(password != cpassword){
+            return res.status(422).json({error : "Passsword not matching"});
         }else{
             const user = new User({fname,lname,email,phone,password,cpassword,prof });
             //password encrypting
@@ -94,14 +93,7 @@ router.post('/signin',async (req,res) =>{
             if(!isMatch){
                 res.status(400).json({error:"Invalid credential"});
             }else{
-                token = await userLogin.generateAuthToken();
-                console.log(token);
-    
-                res.cookie("jwtoken",token,{
-                    expires:new Date(Date.now() + 25892000000),
-                    httpOnly:true
-                });
-                res.status(200).json({message:"user signin Successfully"});
+                res.json({message:"user signin Successfully"});
             }
             
         }else{

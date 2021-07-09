@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@material-ui/core/Avatar';
+import {useHistory} from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -58,7 +59,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Login() {
+
+  const history=useHistory();
   const classes = useStyles();
+  const [email,setEmail]=useState('');
+  const [password,setPassword]=useState(''); 
+
+  const loginUser =async (e) => {
+    e.preventDefault();
+    const res = await fetch('/signin',{
+      method:"POST",
+      headers:{
+        "Content-Type": "application/json"
+      },
+      body:JSON.stringify({
+        email,password
+      })
+    });
+
+    const data = res.json();
+    if(res.status === 400 || !data){
+      window.alert("Invalid Credential");
+    }else{
+      window.alert("Login Successfully");
+      history.push('/');
+    }
+  }
 
   return (
     <Grid container component="main" className={classes.root}>
@@ -72,7 +98,7 @@ export default function Login() {
           <Typography component="h1" variant="h5">
             {/* Sign in */}
           </Typography>
-          <form className={classes.form} noValidate>
+          <form method= "POST" className={classes.form} noValidate>
             <TextField
               variant="outlined"
               margin="normal"
@@ -83,6 +109,8 @@ export default function Login() {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={(e)=>setEmail(e.target.value)}
               inputProps={{
                 maxLength: 30}}
             />
@@ -95,6 +123,8 @@ export default function Login() {
               label="Password"
               type="password"
               id="password"
+              value={password}
+              onChange={(e)=>setPassword(e.target.value)}
               autoComplete="current-password"
               inputProps={{
                 maxLength: 25}}
@@ -108,6 +138,7 @@ export default function Login() {
               fullWidth
               variant="contained"
               color="primary"
+              onClick={loginUser}
               className={classes.submit}
             >
               Sign In
