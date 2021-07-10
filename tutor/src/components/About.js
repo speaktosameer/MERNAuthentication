@@ -1,11 +1,43 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React , {useEffect} from 'react';
+import { NavLink, useHistory } from 'react-router-dom';
 import '../App.css'
 
-function About() {
+const About = () => {
+    const history = useHistory();
+
+    const callAboutpage = async () => {
+        try{
+            const res = await fetch('/about',{
+                method:"GET",
+                headers:{
+                    Accept:"application/json",
+                    "Content-Type":"application/json"
+                },
+                credentials:"include",
+            });
+
+            const data =await res.json();
+            console.log(data);
+
+            if(!res.status === 200){
+                const error = new Error(res.error);
+                throw error;
+            }
+
+        }catch(err){
+            console.log(err);
+            history.push('/login');
+        }
+    }
+
+        useEffect(() => {
+            callAboutpage();
+        }, [])
+
+
     return (
         <>
-       
+       <form method="GET">
             <div className="container">
                 <div className="main-body">
                     <div className="row gutters-sm">
@@ -49,6 +81,7 @@ function About() {
                                 </ul>
                             </div>
                         </div>
+                        
                         <div className="col-md-8">
                             <div className="card mb-3">
                                 <div className="card-body">
@@ -161,12 +194,11 @@ function About() {
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
-
-
-
+            </form>
         </>
     )
 }

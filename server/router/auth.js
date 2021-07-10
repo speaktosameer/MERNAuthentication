@@ -119,7 +119,7 @@ router.post('/signin',async (req,res) =>{
 //about us page
 
 router.get('/about',authenticate, (req,res)=>{
-        res.send("Hello I am from About Page");
+        res.send(req.rootUser);
     }
 );
 
